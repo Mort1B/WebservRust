@@ -9,16 +9,16 @@ use std::str::Utf8Error;
 use std::{error::Error, fmt::Display};
 
 #[derive(Debug)]
-pub struct Request<'inBufStream> {
-    path: &'inBufStream str,
-    query_string: Option<QueryString<'inBufStream>>,
+pub struct Request<'input_buf_stream> {
+    path: &'input_buf_stream str,
+    query_string: Option<QueryString<'input_buf_stream>>,
     method: Method,
 }
 
-impl<'inBufStream> TryFrom<&'inBufStream [u8]> for Request<'inBufStream> {
+impl<'input_buf_stream> TryFrom<&'input_buf_stream [u8]> for Request<'input_buf_stream> {
     type Error = ParseError;
 
-    fn try_from(buf: &'inBufStream [u8]) -> Result<Request<'inBufStream>, Self::Error> {
+    fn try_from(buf: &'input_buf_stream [u8]) -> Result<Request<'input_buf_stream>, Self::Error> {
         let request = str::from_utf8(buf)?;
 
         let (method, request) = get_next_word(request).ok_or(ParseError::InvalidRequest)?;

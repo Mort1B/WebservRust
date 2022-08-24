@@ -1,8 +1,7 @@
-use crate::http::{request, status_codes, Response};
-use std::{
-    io::{Read, Write},
-    net::{TcpListener, TcpStream},
-};
+use status_codes::StatusCode;
+
+use crate::http::{status_codes, Response};
+use std::{io::Read, net::TcpListener};
 
 use crate::http::Request;
 
@@ -36,14 +35,14 @@ impl Server {
                                     println!("Request = {:?}", req);
 
                                     let res = Response::new(
-                                        status_codes::StatusCode::Ok,
-                                        Some("<h1>Hellloooo<h1>".to_string()),
+                                        StatusCode::Ok,
+                                        Some("<h1>Hellloooo</h1>".to_string()),
                                     );
-                                    res.send(&mut stream);
+                                    res.send(&mut stream).unwrap();
                                 }
                                 Err(_) => {
-                                    let res = Response::new(status_codes::StatusCode::Ok, None);
-                                    res.send(&mut stream);
+                                    let res = Response::new(StatusCode::BadRequest, None);
+                                    res.send(&mut stream).unwrap();
                                 }
                             }
                         }

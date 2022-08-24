@@ -1,24 +1,24 @@
 use std::collections::HashMap;
 
 #[derive(Debug)]
-pub struct QueryString<'inBufStream> {
-    data: HashMap<&'inBufStream str, Value<'inBufStream>>,
+pub struct QueryString<'input_buf_stream> {
+    data: HashMap<&'input_buf_stream str, Value<'input_buf_stream>>,
 }
 
 #[derive(Debug)]
-pub enum Value<'inBufStream> {
-    Single(&'inBufStream str),
-    Multiple(Vec<&'inBufStream str>),
+pub enum Value<'input_buf_stream> {
+    Single(&'input_buf_stream str),
+    Multiple(Vec<&'input_buf_stream str>),
 }
 
-impl<'inBufStream> QueryString<'inBufStream> {
+impl<'input_buf_stream> QueryString<'input_buf_stream> {
     pub fn get(&self, key: &str) -> Option<&Value> {
         self.data.get(key)
     }
 }
 
-impl<'inBufStream> From<&'inBufStream str> for QueryString<'inBufStream> {
-    fn from(s: &'inBufStream str) -> Self {
+impl<'input_buf_stream> From<&'input_buf_stream str> for QueryString<'input_buf_stream> {
+    fn from(s: &'input_buf_stream str) -> Self {
         let mut data = HashMap::new();
         for sub_str in s.split('&') {
             let mut key = sub_str;
